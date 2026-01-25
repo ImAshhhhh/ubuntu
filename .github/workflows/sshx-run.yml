@@ -18,7 +18,7 @@ jobs:
       - name: Set hostname
         run: |
           sudo hostnamectl set-hostname ash
-          echo "[INFO] Hostname set" >> $LOG_FILE
+          echo "Hostname set" >> $LOG_FILE
 
       - name: Install tools
         run: |
@@ -26,44 +26,30 @@ jobs:
           sudo apt install -y neofetch curl >> $LOG_FILE 2>&1
 
       - name: System info
-        run: neofetch | tee -a $LOG_FILE
+        run: |
+          neofetch | tee -a $LOG_FILE
 
       - name: Start SSHX
         run: |
           curl -s https://sshx.io/get | bash
           sshx --shell bash | tee sshx.log &
           sleep 15
-
           SSHX_URL=$(grep -o 'https://sshx.io/[^ ]*' sshx.log | head -n 1)
-
-          MSG=$(cat <<EOF
-🚀 Fresh GitHub VM Online
-🖥️ Host: ash
-🐧 Ubuntu Runner
-
-🌐 SSHX URL:
-$SSHX_URL
-
-⏳ Runtime: 6 hours
-♻️ Auto chaining enabled
-EOF
-          )
-
           curl -s -X POST "https://api.telegram.org/bot8362379114:AAFg_bOXNSu5uiLagudbPGS4Hshjg53NAmM/sendMessage" \
             -d chat_id=7269251740 \
-            --data-urlencode text="$MSG"
+            --data-urlencode text="Fresh VM started. SSHX URL: $SSHX_URL"
 
       - name: Hourly heartbeat
         run: |
-          for H in {1..6}; do
+          for H in 1 2 3 4 5 6; do
             sleep 3600
             curl -s -X POST "https://api.telegram.org/bot8362379114:AAFg_bOXNSu5uiLagudbPGS4Hshjg53NAmM/sendMessage" \
               -d chat_id=7269251740 \
-              --data-urlencode text="⏱️ Hour $H/6 done — VM alive ✅"
+              --data-urlencode text="Hour $H of 6 completed"
           done
 
       - name: Shutdown notice
         run: |
           curl -s -X POST "https://api.telegram.org/bot8362379114:AAFg_bOXNSu5uiLagudbPGS4Hshjg53NAmM/sendMessage" \
             -d chat_id=7269251740 \
-            --data-urlencode text="💀 VM expired. Switching to fresh runner…"
+            --data-urlencode text="VM finished. Switching to new runner."
