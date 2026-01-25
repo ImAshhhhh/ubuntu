@@ -1,11 +1,15 @@
-name: Ubuntu SSH Access
+name: SSHX Public Terminal
 
 on:
   workflow_dispatch:
 
 jobs:
-  ssh:
+  sshx-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup tmate SSH
-        uses: mxschmitt/action-tmate@v3
+      - name: Install curl
+        run: sudo apt update && sudo apt install -y curl
+
+      - name: Run sshx
+        run: |
+          curl -sSf https://sshx.io/get | sh -s run
