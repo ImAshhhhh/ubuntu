@@ -1,7 +1,7 @@
-name: SSHX Public Terminal with Custom Hostname
+name: SSHX Public Terminal
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:   # manual trigger
 
 jobs:
   sshx-job:
