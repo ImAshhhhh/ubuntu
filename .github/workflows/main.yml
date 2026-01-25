@@ -1,4 +1,4 @@
-name: SSHX Public Terminal
+name: SSHX Public Terminal with Custom Hostname
 
 on:
   workflow_dispatch:
@@ -7,6 +7,11 @@ jobs:
   sshx-job:
     runs-on: ubuntu-latest
     steps:
+      - name: Change hostname
+        run: |
+          sudo hostnamectl set-hostname ash
+          echo "127.0.0.1 ash" | sudo tee -a /etc/hosts
+
       - name: Install curl
         run: sudo apt update && sudo apt install -y curl
 
