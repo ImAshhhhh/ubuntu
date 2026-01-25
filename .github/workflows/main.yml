@@ -1,0 +1,11 @@
+name: Ubuntu SSH Access
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ssh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup tmate SSH
+        uses: mxschmitt/action-tmate@v3
