@@ -1,0 +1,17 @@
+name: SSHX Auto-Restart
+
+on:
+  workflow_run:
+    workflows: ["SSHX Public Terminal"]  # Must match the `name` in sshx.yml
+    types:
+      - completed
+
+jobs:
+  trigger-new:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger SSHX Public Terminal
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          workflow: "SSHX Public Terminal"
+          ref: main   # branch to trigger
